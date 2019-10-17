@@ -8,12 +8,18 @@ import kotlin.system.measureTimeMillis
  * @author Havlong
  * @version v1.0
  */
-class LineReader(tempReader: Reader, private val isFile: Boolean) {
+class LineReader(tempReader: Reader) {
     private val reader = BufferedReader(tempReader)
-    private val list: List<String>? = if (isFile) reader.readLines() else null
-    private var line: Int = 0
-    fun hasNext() = isFile && line < list!!.size
-    fun readLine() = (if (hasNext()) list!![line++] else reader.readLine())!!
+    fun hasNext() = peek() != -1
+    private fun peek(): Int {
+        reader.mark(1)
+        return reader.read().also { reader.reset() }
+    }
+    fun skipSpaces() {
+        while (Character.isWhitespace(peek()))
+            reader.read()
+    }
+    fun readLine() = reader.readLine()
     fun longList() = readLine().split(' ').map(String::toLong)
     fun intList() = readLine().split(' ').map(String::toInt)
 }
@@ -87,14 +93,17 @@ fun lcm(a: Long, b: Long) = a * b / gcd(a, b)
 
 fun main(args: Array<String>) {
     if (args.isNotEmpty() && args[0] == "local") {
-        val reader = LineReader(FileReader("input.txt"), true)
+        val reader = LineReader(FileReader("input.txt"))
         PrintWriter(File("output.txt")).use {
-            while (reader.hasNext()) it.println("\n${measureTimeMillis {
-                solve(reader, it)
-            }} ms\n")
+            while (reader.hasNext()) {
+                it.println("\n${measureTimeMillis {
+                    solve(reader, it)
+                }} ms\n")
+                reader.skipSpaces()
+            }
         }
     } else {
-        val reader = LineReader(InputStreamReader(System.`in`), false)
+        val reader = LineReader(InputStreamReader(System.`in`))
         PrintWriter(System.out).use { solve(reader, it) }
     }
 }
