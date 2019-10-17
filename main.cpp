@@ -18,10 +18,10 @@ void solve() {
 
 }
 
-signed main(signed argc, char ** argv) {
+signed main(signed argc, char **argv) {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
-    if (argc > 1 && (string)argv[1] == "local") {
+    if (argc > 1 && (string) argv[1] == "local") {
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
         solve();
