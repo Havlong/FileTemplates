@@ -14,10 +14,10 @@ using namespace std;
 #define make(type, x) type x; cin >> x;
 #define makev(x, n) VI x(n); FOR(p, n) cin >> x[p]
 
-#define M7 = 1000000007
-#define M9 = 1000000009
-#define MFFT = 998244353
-#define INF = 2000000000000000000LL
+#define M7 1000000007
+#define M9 1000000009
+#define MFFT 998244353
+#define INF 2000000000000000000LL
 
 void solve() {
 
