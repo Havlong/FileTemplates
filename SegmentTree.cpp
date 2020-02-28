@@ -1,20 +1,24 @@
-template<typename T, typename F = binary_function<T, T, T>>
+template<typename T, typename F = function<T(T, T)>>
 class SegmentTree {
 private:
     int size;
     vector<T> tree;
     F up;
 public:
-    SegmentTree(int size, F mapper) : size(size) {
+    SegmentTree(int size, F mapper) : size(size), up(std::move(mapper)) {
         tree.resize(4 * size);
     }
 
-    SegmentTree(const vector<int> &toBuildFrom, F mapper) : size(toBuildFrom.size()) {
+    SegmentTree(const vector<T> &toBuildFrom, F mapper) : size(toBuildFrom.size()), up(std::move(mapper)) {
         tree.resize(4 * size);
-        build(toBuildFrom);
+        build(toBuildFrom, 0, size - 1);
     }
 
-    void build(const vector<int> &vector, const int ql, const int qr, const int pos = 1) {
+    int getSize() const {
+        return size;
+    }
+
+    void build(const vector<T> &vector, const int ql, const int qr, const int pos = 1) {
         if (ql == qr) {
             tree[pos] = vector[ql];
             return;
@@ -43,10 +47,10 @@ public:
         if (ql >= l && qr <= r)
             return tree[pos];
         int mid = (ql + qr) / 2;
-        if (mid >= qr) {
+        if (mid >= r) {
             return query(l, r, ql, mid, pos * 2);
         }
-        if (mid < ql) {
+        if (mid < l) {
             return query(l, r, mid + 1, qr, pos * 2 + 1);
         }
         auto lVal = query(l, r, ql, mid, pos * 2);
