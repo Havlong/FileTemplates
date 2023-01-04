@@ -17,7 +17,7 @@ private:
     int setCnt;
 
     void merge(int v, int u) {
-        sz[v] += sz[v];
+        sz[v] += sz[u];
         p[u] = v;
         setCnt--;
     }
