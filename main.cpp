@@ -1,5 +1,10 @@
+//region DEFINES
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+//endregion
 
 #include <iostream>
 #include <iomanip>
@@ -39,19 +44,12 @@ using namespace std;
 //@formatter:off
 template<typename T> void read(T &x) { cin >> x; }
 template<typename T, typename ... Ts> void read(T &x, Ts &... rest) { cin >> x; read(rest...); }
-template<typename Iterator>
-string join(Iterator b, Iterator e, const string &sep = " ", const string &pref = "", const string &post = "") {
-    stringstream builder;
-    builder << pref;
-    if (b != e) {
-        Iterator it = b;
-        builder << *it;
-        for (++it; it != e; ++it) {
-            builder << sep << *it;
-        }
-    }
-    builder << post;
-    return builder.str();
+template<typename It> string join(It b, It e, const string &sep=" ", const string &pre="", const string &post="") {
+    if (b == e) return pre + post;
+    stringstream builder; builder << pre;
+    It it = b; builder << *it;
+    for (++it; it != e; ++it) builder << sep << *it;
+    builder << post; return builder.str();
 }
 template<typename T>
 string join(initializer_list<T> list, const string &sep = " ", const string &pref = "", const string &post = "")
